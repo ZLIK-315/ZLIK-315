@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.markerhub.sys.mapper.SysUserMapper">
+    <select id="getNavMenuIds" resultType="java.lang.Long">
+        select distinct rm.menu_id from sys_role_menu rm
+        left join sys_user_role ur on rm.role_id = ur.role_id where ur.user_id = #{id}
+    </select>
+    <select id="listByMenuId" resultType="com.markerhub.sys.entity.SysUser">
+        SELECT DISTINCT
+          su.*
+        FROM
+          sys_role_menu rm
+          LEFT JOIN sys_user_role ur
+            ON rm.role_id = ur.role_id
+          LEFT JOIN sys_user su
+            ON ur.user_id = su.id
+        WHERE rm.menu_id = #{menuId}
+    </select>
+</mapper>
