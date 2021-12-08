@@ -1,12 +1,11 @@
 package com.markerhub.sys.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.markerhub.sys.entity.vo.BaseEntity;
+import com.markerhub.vo.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,5 +43,6 @@ public class SysRole extends BaseEntity {
 
     @TableField(exist = false)
     private List<Long> menuIds = new ArrayList<> (  );
-
+    @TableField(exist = false)
+    private List<SysDept> sysDepts = new ArrayList<> (  );
 }

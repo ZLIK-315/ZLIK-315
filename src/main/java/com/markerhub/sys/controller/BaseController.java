@@ -39,13 +39,16 @@ public class BaseController {
     @Autowired
     SysDeptService sysDeptService;
 
+    @Autowired
+    SysLogService sysLogService;
+
     /**
      * 获取页码
      * @return
      */
     public Page getPage() {
-        int currentPage = ServletRequestUtils.getIntParameter ( req,"currentPage",1 );
-        int pageSize = ServletRequestUtils.getIntParameter ( req,"pageSize",10 );
+        int currentPage = ServletRequestUtils.getIntParameter ( req,"current",1 );
+        int pageSize = ServletRequestUtils.getIntParameter ( req,"size",5 );
 
         return new Page(currentPage , pageSize);
     }

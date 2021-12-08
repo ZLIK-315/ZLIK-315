@@ -1,11 +1,6 @@
 package com.markerhub.sys.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
-
-import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
-import com.markerhub.sys.entity.vo.BaseEntity;
+import com.markerhub.vo.BaseCity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,7 +14,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class SysDept extends BaseEntity {
+public class SysDept extends BaseCity {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,11 +27,6 @@ public class SysDept extends BaseEntity {
      * 部门名称
      */
     private String name;
-
-    /**
-     * 所属地区
-     */
-    private String area;
 
 
 }

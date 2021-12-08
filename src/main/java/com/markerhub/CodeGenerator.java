@@ -49,17 +49,17 @@ public class CodeGenerator {
         PackageConfig pc = new PackageConfig();
         //模块名
         pc.setModuleName(null);
-        pc.setParent("com.vueadminjava");
-        pc.setController("sys.controller");
-        pc.setEntity("sys.entity");
-        pc.setService("sys.service");
-        pc.setMapper("sys.mapper");
+        pc.setParent("com.markerhub");
+        pc.setController("purchase.controller");
+        pc.setEntity("purchase.entity");
+        pc.setService("purchase.service");
+        pc.setMapper("purchase.mapper");
         mpg.setPackageInfo(pc);
 
         // 5、策略配置
         StrategyConfig strategy = new StrategyConfig();
         //对那一张表生成代码
-        strategy.setInclude("sys_dept");
+        strategy.setInclude("tb_vendor");
         //数据库表映射到实体的命名策略
         strategy.setNaming(NamingStrategy.underline_to_camel);
         //生成实体时去掉表前缀

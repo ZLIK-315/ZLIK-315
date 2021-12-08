@@ -2,7 +2,6 @@ package com.markerhub.sys.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.markerhub.sys.entity.vo.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

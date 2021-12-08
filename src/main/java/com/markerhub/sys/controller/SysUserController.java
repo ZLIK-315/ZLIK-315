@@ -8,10 +8,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.markerhub.common.dto.PassDto;
 import com.markerhub.common.lang.Const;
 import com.markerhub.common.lang.Result;
+import com.markerhub.log.SysLogConfig;
 import com.markerhub.sys.entity.SysDept;
 import com.markerhub.sys.entity.SysRole;
 import com.markerhub.sys.entity.SysUser;
 import com.markerhub.sys.entity.SysUserRole;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -38,9 +41,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/sys/user")
 public class SysUserController extends BaseController{
+    private static final Logger log = LogManager.getLogger("SysUserController");
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
 
+    @SysLogConfig("查询用户信息")
     @GetMapping("/list")
     @PreAuthorize ( "hasAuthority('sys:user:list')" )
     public Result list(Long id,String username,Long deptId,Integer state,Long roleId){
@@ -75,7 +80,7 @@ public class SysUserController extends BaseController{
         return Result.success (sysUser);
     }
 
-
+    @SysLogConfig("添加用户信息")
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('sys:user:save')")
     public Result save(@Validated @RequestBody SysUser sysUser) {
@@ -93,7 +98,7 @@ public class SysUserController extends BaseController{
         sysUserService.save(sysUser);
         return Result.success (sysUser);
     }
-
+    @SysLogConfig("修改用户信息")
     @PostMapping("/update")
     @PreAuthorize("hasAuthority('sys:user:update')")
     public Result update(@Validated @RequestBody SysUser sysUser) {
@@ -106,7 +111,7 @@ public class SysUserController extends BaseController{
         sysUserService.updateById(sysUser);
         return Result.success (sysUser);
     }
-
+    @SysLogConfig("删除用户信息")
     @Transactional
     @PostMapping("/delete")
     @PreAuthorize("hasAuthority('sys:user:delete')")
@@ -117,7 +122,7 @@ public class SysUserController extends BaseController{
 
         return Result.success ("");
     }
-
+    @SysLogConfig("分配用户权限信息")
     @Transactional
     @PostMapping("/role/{userId}")
     @PreAuthorize("hasAuthority('sys:user:role')")
@@ -141,7 +146,7 @@ public class SysUserController extends BaseController{
 
         return Result.success ("");
     }
-
+    @SysLogConfig("重置用户密码")
     @PostMapping("/repass")
     @PreAuthorize("hasAuthority('sys:user:repass')")
     public Result repass(@RequestBody Long userId) {
@@ -154,7 +159,7 @@ public class SysUserController extends BaseController{
         sysUserService.updateById(sysUser);
         return Result.success ("");
     }
-
+    @SysLogConfig("修改用户密码")
     @PostMapping ("/updatePass")
     public Result updatePass( @Validated @RequestBody PassDto passDto, Principal principal) {
 

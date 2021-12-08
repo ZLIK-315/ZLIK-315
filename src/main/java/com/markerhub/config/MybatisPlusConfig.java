@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2021-10-23 16:03
  */
 @Configuration
-@MapperScan("com.markerhub.sys.mapper")
+@MapperScan("com.markerhub.*.mapper")
 public class MybatisPlusConfig {
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor(){

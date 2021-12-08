@@ -1,7 +1,7 @@
 package com.markerhub.sys.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.markerhub.sys.entity.vo.BaseEntity;
+import com.markerhub.vo.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

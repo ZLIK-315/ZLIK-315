@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.markerhub.common.lang.Const;
 import com.markerhub.common.lang.Result;
+import com.markerhub.log.SysLogConfig;
+import com.markerhub.sys.entity.SysDept;
 import com.markerhub.sys.entity.SysRole;
 import com.markerhub.sys.entity.SysRoleMenu;
 import com.markerhub.sys.entity.SysUserRole;
@@ -37,30 +39,36 @@ public class SysRoleController extends BaseController{
     public Result info(@PathVariable("id") Long id) {
         SysRole sysRole = sysRoleService.getById ( id );
         //获取角色相关联的菜单id
-        List< SysRoleMenu > roleMenus = sysRoleMenuService.list ( new QueryWrapper< SysRoleMenu > ().eq ( "role_id", id ) );
+        List< SysRoleMenu > roleMenus = sysRoleMenuService.list ( new QueryWrapper< SysRoleMenu > ().eq ( "role_id", id )
+        );
         List< Long > menuIds = roleMenus.stream ().map ( p -> p.getMenuId () ).collect ( Collectors.toList () );
 
         sysRole.setMenuIds ( menuIds );
         return Result.success ( sysRole );
     }
+    @SysLogConfig ("查询职位信息")
     @GetMapping("/list")
     @PreAuthorize ( "hasAuthority('sys:role:list')" )
     public Result list(String name) {
         Page<SysRole> pageData = sysRoleService.page ( getPage (),
                 new QueryWrapper< SysRole > ()
                         .like ( StrUtil.isNotBlank ( name ), "name", name ) );
-
+        pageData.getRecords ().forEach ( r -> {
+            List< SysDept > sysDepts = sysDeptService.listDeptsByUserId ( r.getDeptId () );
+            r.setSysDepts ( sysDepts );
+        } );
         return Result.success ( pageData );
     }
+    @SysLogConfig("添加职位信息")
     @PostMapping("/save")
     @PreAuthorize ( "hasAuthority('sys:role:save')" )
     public Result save(@Validated @RequestBody SysRole sysRole ) {
         sysRole.setCreated ( LocalDateTime.now () );
         sysRole.setState ( Const.STATE_ON );
-
         sysRoleService.save ( sysRole );
         return Result.success ( sysRole );
     }
+    @SysLogConfig("修改职位信息")
     @PostMapping("/update")
     @PreAuthorize ( "hasAuthority('sys:role:update')" )
     public Result update(@Validated @RequestBody SysRole sysRole) {
@@ -70,6 +78,7 @@ public class SysRoleController extends BaseController{
         sysUserService.clearUserAuthorityInfoByRoleId ( sysRole.getId () );
         return Result.success ( sysRole );
     }
+    @SysLogConfig("删除职位信息")
     @DeleteMapping("/delete/{ids}")
     @PreAuthorize ( "hasAuthority('sys:role:delete')" )
     //添加事务
@@ -89,7 +98,7 @@ public class SysRoleController extends BaseController{
 
         return Result.success ( "" );
     }
-
+    @SysLogConfig("分配职位信息")
     @PostMapping("/perm/{roleId}")
     @Transactional
     @PreAuthorize ( "hasAuthority('sys:role:perm')" )
